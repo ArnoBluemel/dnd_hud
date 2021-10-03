@@ -6,7 +6,7 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "deploy": "vite build --base=/quantum-sheet/ && node utils/publish.js"
+    "deploy": "vite build --base=/dnd_hud/ && node utils/publish.js"
   },
   "dependencies": {
     "@types/uuid": "^8.3.1",
