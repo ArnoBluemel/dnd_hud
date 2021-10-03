@@ -9,6 +9,10 @@
     "deploy": "vite build --base=/quantum-sheet/ && node utils/publish.js"
   },
   "dependencies": {
+    "@types/uuid": "^8.3.1",
+    "bootstrap": "^5.1.1",
+    "browser-fs-access": "^0.20.5",
+    "idb-keyval": "^6.0.2",
     "uuid": "^8.3.2",
     "vue": "^3.2.16"
   },
