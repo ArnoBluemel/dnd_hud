@@ -4,13 +4,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "deploy": "vite build --base=/quantum-sheet/ && node utils/publish.js"
   },
   "dependencies": {
+    "uuid": "^8.3.2",
     "vue": "^3.2.16"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.2",
+    "gh-pages": "^3.2.3",
     "vite": "^2.6.0"
   }
 }
