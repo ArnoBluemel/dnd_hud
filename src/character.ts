@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-export class character {
+export class Character {
   constructor() {}
 
   id: string = uuid();
