@@ -22,7 +22,7 @@ session.characters.push(characterA);
 let characterB = new character();
 characterB.name = "Deathbringer";
 characterB.isOnMap = false;
-characterB.mapPosition = [100, -100];
+characterB.mapPosition = [50, 50];
 characterB.maxHealth = 69;
 characterB.currentHealth = 69;
 
