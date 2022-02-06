@@ -31,7 +31,6 @@
         <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
         <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%">
           <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
-          <ol-zoom-control />
           <ol-image-layer>
             <ol-source-image-static :url="imgUrl" :imageSize="size" :imageExtent="extent" :projection="projection"></ol-source-image-static>
           </ol-image-layer>
