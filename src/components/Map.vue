@@ -30,7 +30,7 @@
       <div class="map-container">
         <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
         <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%" @pointermove="getMousePosition">
-          <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
+          <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" :extent="[0, 0, 100, 100]" />
 
           <ol-image-layer>
             <ol-source-image-static :url="imgUrl" :imageSize="size" :imageExtent="extent" :projection="projection"></ol-source-image-static>
@@ -63,7 +63,7 @@ import { v4 as uuid } from "uuid";
 import { session } from "./../dnd_session";
 import { Character } from "../character";
 
-const zoom = ref(2);
+const zoom = ref(1);
 const rotation = ref(0);
 
 const size = ref([100, 100]);
@@ -100,11 +100,23 @@ function selectCharacter(character: Character) {
   if (!selectedMapCharacter.value) selectedMapCharacter.value = character;
   else selectedMapCharacter.value = undefined;
 }
+
+function getImageSize(url: string) {
+  return new Promise((resolve, reject) => {
+    const size = { width: 0, height: 0 };
+    const img = new Image();
+    img.onload = (ev) => {
+      resolve({ width: img.width, height: img.height });
+    };
+    img.onerror = (e) => reject(e);
+    img.src = url;
+  });
+}
 </script>
 
 <style scoped>
 .map-container {
-  width: 500px;
+  width: 100%;
   height: 500px;
   position: relative;
 }

@@ -14,7 +14,7 @@ export let session = new DndSession();
 let characterA = new Character();
 characterA.name = "Hellraiser";
 characterA.isOnMap = true;
-characterA.mapPosition = [0, 0];
+characterA.mapPosition = [50, 50];
 characterA.maxHealth = 666;
 characterA.currentHealth = 255;
 session.characters.push(characterA);
@@ -22,7 +22,7 @@ session.characters.push(characterA);
 let characterB = new Character();
 characterB.name = "Deathbringer";
 characterB.isOnMap = false;
-characterB.mapPosition = [100, 100];
+characterB.mapPosition = [50, 50];
 characterB.maxHealth = 69;
 characterB.currentHealth = 69;
 

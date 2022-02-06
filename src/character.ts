@@ -6,7 +6,7 @@ export class Character {
   id: string = uuid();
   name: string = "";
   isOnMap: boolean = false;
-  mapPosition: [number, number] = [0, 0];
+  mapPosition: [number, number] = [50, 50];
   mapColor: string = "#000000";
   initiative: number = 0;
   currentHealth: number = 0;
