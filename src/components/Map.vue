@@ -5,6 +5,9 @@
       <div class="col">
         <button class="button">Load map</button>
         <button class="button">Clear map</button>
+        <br />
+        <button class="button">Zoom in</button>
+        <button class="button">Zoom out</button>
       </div>
       <div class="col">
         Players on map:
@@ -26,16 +29,18 @@
     <div class="row">
       <div class="map-container">
         <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
-        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%">
+        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%" @pointermove="getMousePosition">
           <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
-          <ol-zoom-control />
+
+          <ol-mouseposition-control />
+
           <ol-image-layer>
             <ol-source-image-static :url="imgUrl" :imageSize="size" :imageExtent="extent" :projection="projection"></ol-source-image-static>
           </ol-image-layer>
 
           <ol-overlay
-            class="map-character-overlay"
             v-for="character in onMap"
+            class="map-character-overlay"
             :key="character.id"
             :position="[character.mapPosition[0], character.mapPosition[1]]"
           >
@@ -47,96 +52,46 @@
               </div>
             </template>
           </ol-overlay>
-
-          <ol-vector-layer>
-            <ol-source-vector>
-              <ol-feature>
-                <ol-geom-point :coordinates="coordinate"></ol-geom-point>
-                <ol-style>
-                  <ol-style-circle :radius="radius" v-for="character in onMap">
-                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                    <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
-                    <div class="map-character" :style="{ 'background-color': character.mapColor, color: character.mapColor }">
-                      <div class="map-character-name" :style="{ color: character.mapColor }">
-                        {{ character.name.substring(0, 2) }}
-                      </div>
-                    </div>
-                  </ol-style-circle>
-                </ol-style>
-              </ol-feature>
-            </ol-source-vector>
-          </ol-vector-layer>
-
-          <ol-interaction-transform> </ol-interaction-transform>
         </ol-map>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, PropType, ref, watch, shallowRef, computed, reactive } from "vue";
 import { v4 as uuid } from "uuid";
 import { session } from "./../dnd_session";
 
-export default defineComponent({
-  components: {},
-  setup(props, context) {
-    const radius = ref(40);
-    const strokeWidth = ref(10);
-    const strokeColor = ref("red");
-    const fillColor = ref("white");
-    const coordinate = ref([40, 40]);
+const zoom = ref(2);
+const rotation = ref(0);
 
-    const zoom = ref(2);
-    const rotation = ref(0);
-
-    const size = ref([100, 100]);
-    const center = ref([size.value[0] / 2, size.value[1] / 2]);
-    const extent = ref([0, 0, ...size.value]);
-    const projection = reactive({
-      code: "xkcd-image",
-      units: "pixels",
-      extent: extent,
-    });
-    const imgUrl = ref("./maps/pinescot_farm_ground.png");
-
-    let name = ref("my name");
-    let selectedCharacter = ref("");
-    let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
-    let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
-    //let addToMap = computed(() => session.characters.filter((v) => !v.isOnMap));\
-
-    function addToMap() {
-      selectedCharacter.value;
-      let character = session.characters.find((v) => v.id == selectedCharacter.value);
-      if (!character) return;
-      character.isOnMap = true;
-    }
-
-    return {
-      name,
-      onMap,
-      notOnMap,
-      addToMap,
-      selectedCharacter,
-
-      center,
-      projection,
-      zoom,
-      rotation,
-      size,
-      extent,
-      imgUrl,
-
-      radius,
-      strokeWidth,
-      strokeColor,
-      fillColor,
-      coordinate,
-    };
-  },
+const size = ref([100, 100]);
+const center = ref([size.value[0] / 2, size.value[1] / 2]);
+const extent = ref([0, 0, ...size.value]);
+const projection = reactive({
+  code: "xkcd-image",
+  units: "pixels",
+  extent: extent,
 });
+const imgUrl = ref("./maps/pinescot_farm_ground.png");
+
+let name = ref("my name");
+let selectedCharacter = ref("");
+let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
+let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
+//let addToMap = computed(() => session.characters.filter((v) => !v.isOnMap));\
+
+function addToMap() {
+  selectedCharacter.value;
+  let character = session.characters.find((v) => v.id == selectedCharacter.value);
+  if (!character) return;
+  character.isOnMap = true;
+}
+
+function getMousePosition(ev: { coordinate?: [number, number] }) {
+  if (ev.coordinate) console.log(ev.coordinate);
+}
 </script>
 
 <style scoped>
