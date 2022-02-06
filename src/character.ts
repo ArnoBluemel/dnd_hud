@@ -1,12 +1,12 @@
 import { v4 as uuid } from "uuid";
 
-export class character {
+export class Character {
   constructor() {}
 
   id: string = uuid();
   name: string = "";
   isOnMap: boolean = false;
-  mapPosition: [number, number] = [0, 0];
+  mapPosition: [number, number] = [50, 50];
   mapColor: string = "#000000";
   initiative: number = 0;
   currentHealth: number = 0;
