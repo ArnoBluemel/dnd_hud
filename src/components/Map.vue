@@ -5,6 +5,9 @@
       <div class="col">
         <button class="button">Load map</button>
         <button class="button">Clear map</button>
+        <br />
+        <button class="button">Zoom in</button>
+        <button class="button">Zoom out</button>
       </div>
       <div class="col">
         Players on map:
@@ -34,9 +37,10 @@
           </ol-image-layer>
 
           <ol-overlay
-            class="map-character-overlay"
             v-for="character in onMap"
+            class="map-character-overlay"
             :key="character.id"
+            :positioning="'center-center'"
             :position="[character.mapPosition[0], character.mapPosition[1]]"
           >
             <template v-slot="slotProps">
@@ -47,27 +51,6 @@
               </div>
             </template>
           </ol-overlay>
-
-          <ol-vector-layer>
-            <ol-source-vector>
-              <ol-feature>
-                <ol-geom-point :coordinates="coordinate"></ol-geom-point>
-                <ol-style>
-                  <ol-style-circle :radius="radius" v-for="character in onMap">
-                    <ol-style-fill :color="fillColor"></ol-style-fill>
-                    <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
-                    <div class="map-character" :style="{ 'background-color': character.mapColor, color: character.mapColor }">
-                      <div class="map-character-name" :style="{ color: character.mapColor }">
-                        {{ character.name.substring(0, 2) }}
-                      </div>
-                    </div>
-                  </ol-style-circle>
-                </ol-style>
-              </ol-feature>
-            </ol-source-vector>
-          </ol-vector-layer>
-
-          <ol-interaction-transform> </ol-interaction-transform>
         </ol-map>
       </div>
     </div>
@@ -82,16 +65,10 @@ import { session } from "./../dnd_session";
 export default defineComponent({
   components: {},
   setup(props, context) {
-    const radius = ref(40);
-    const strokeWidth = ref(10);
-    const strokeColor = ref("red");
-    const fillColor = ref("white");
-    const coordinate = ref([40, 40]);
-
     const zoom = ref(2);
     const rotation = ref(0);
 
-    const size = ref([100, 100]);
+    const size = ref([1024, 968]);
     const center = ref([size.value[0] / 2, size.value[1] / 2]);
     const extent = ref([0, 0, ...size.value]);
     const projection = reactive({
@@ -128,12 +105,6 @@ export default defineComponent({
       size,
       extent,
       imgUrl,
-
-      radius,
-      strokeWidth,
-      strokeColor,
-      fillColor,
-      coordinate,
     };
   },
 });
