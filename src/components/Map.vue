@@ -28,30 +28,55 @@
     </div>
     <div class="row">
       <div class="map-container">
-        <img src="./../assets/pinescot_farm_ground.png" class="col" />
-        <span
-          class="map-character"
-          v-for="character in onMap"
-          :key="character.id"
-          :style="{ 'background-color': character.mapColor, left: character.mapPosition[0] + 'px', top: character.mapPosition[1] + 'px' }"
-        >
-          <div class="map-character-name" :style="{ color: character.mapColor }">
-            {{ character.name.substring(0, 2) }}
-          </div>
-        </span>
+        <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
+        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%">
+          <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
+          <ol-zoom-control />
+          <ol-image-layer>
+            <ol-source-image-static :url="imgUrl" :imageSize="size" :imageExtent="extent" :projection="projection"></ol-source-image-static>
+          </ol-image-layer>
+
+          <ol-overlay
+            v-for="character in onMap"
+            :key="character.id"
+            :positioning="'center-center'"
+            :position="[character.mapPosition[0], character.mapPosition[1]]"
+          >
+            <template v-slot="slotProps">
+              <div class="map-character" :style="{ 'background-color': character.mapColor, color: character.mapColor }">
+                <div class="map-character-name" :style="{ color: character.mapColor }">
+                  {{ character.name.substring(0, 2) }}
+                </div>
+              </div>
+            </template>
+          </ol-overlay>
+        </ol-map>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, shallowRef, computed } from "vue";
+import { defineComponent, PropType, ref, watch, shallowRef, computed, reactive } from "vue";
 import { v4 as uuid } from "uuid";
 import { session } from "./../dnd_session";
 
 export default defineComponent({
   components: {},
   setup(props, context) {
+    const zoom = ref(2);
+    const rotation = ref(0);
+
+    const size = ref([1024, 968]);
+    const center = ref([size.value[0] / 2, size.value[1] / 2]);
+    const extent = ref([0, 0, ...size.value]);
+    const projection = reactive({
+      code: "xkcd-image",
+      units: "pixels",
+      extent: extent,
+    });
+    const imgUrl = ref("https://imgs.xkcd.com/comics/online_communities.png");
+
     let name = ref("my name");
     let selectedCharacter = ref("");
     let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
@@ -71,6 +96,14 @@ export default defineComponent({
       notOnMap,
       addToMap,
       selectedCharacter,
+
+      center,
+      projection,
+      zoom,
+      rotation,
+      size,
+      extent,
+      imgUrl,
     };
   },
 });
@@ -78,7 +111,8 @@ export default defineComponent({
 
 <style scoped>
 .map-container {
-  width: 100%;
+  width: 500px;
+  height: 500px;
   position: relative;
 }
 
@@ -89,8 +123,9 @@ export default defineComponent({
 .map-character {
   position: absolute;
   display: block;
-  border: 2px solid black;
+  border: 2px solid silver;
   border-radius: 24px;
+  box-shadow: 0 5px 5px rgb(5 5 5 / 100%);
   width: 48px;
   height: 48px;
   line-height: 48px;

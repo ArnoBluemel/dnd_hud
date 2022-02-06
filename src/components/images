@@ -1,0 +1,8 @@
+{
+    {
+      'normal_size':  // required
+      [
+        {'id':'1', 'url': '../pinescot_farm_ground.png'}
+      ]
+    }
+}

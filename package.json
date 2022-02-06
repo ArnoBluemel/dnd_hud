@@ -15,7 +15,8 @@
     "browser-fs-access": "^0.20.5",
     "idb-keyval": "^6.0.2",
     "uuid": "^8.3.2",
-    "vue": "^3.2.16"
+    "vue": "^3.2.16",
+    "vue3-openlayers": "^0.1.58"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.2",
