@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+    "dev": "vite --open",
+    "start": "vite --open",
     "build": "vite build",
     "serve": "vite preview",
     "deploy": "vite build --base=/dnd_hud/ && node utils/publish.js"
