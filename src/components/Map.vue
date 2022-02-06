@@ -117,7 +117,7 @@ function getImageSize(url: string) {
 <style scoped>
 .map-container {
   width: 100%;
-  height: 500px;
+  height: 800px;
   position: relative;
 }
 
