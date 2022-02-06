@@ -75,7 +75,7 @@ export default defineComponent({
       units: "pixels",
       extent: extent,
     });
-    const imgUrl = ref("https://imgs.xkcd.com/comics/online_communities.png");
+    const imgUrl = ref("./maps/pinescot_farm_ground.png");
 
     let name = ref("my name");
     let selectedCharacter = ref("");
