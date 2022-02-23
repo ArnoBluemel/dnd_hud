@@ -13,7 +13,6 @@ import CharacterList from "./components/CharacterList.vue";
         <character-list />
       </div>
       <div class="col-6">
-        Map
         <Map />
       </div>
       <div class="col-3">Enemy</div>
@@ -21,4 +20,4 @@ import CharacterList from "./components/CharacterList.vue";
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

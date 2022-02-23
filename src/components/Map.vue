@@ -1,31 +1,57 @@
 <template>
-  <div class="map container" style="height: 100%">
-    <!-- Stuff at the top -->
-    <div class="row container map-controls">
+  <div class="map" style="height: 100%; width: 100%">
+    <div style="height: 2vh" />
+    <!-- Map Controls -->
+    <div class="row map-controls">
       <div class="col">
-        <button class="button">Load map</button>
-        <button class="button">Clear map</button>
-        <br />
-        <button class="button">Zoom in</button>
-        <button class="button">Zoom out</button>
+        <div class="row" style="height: 3.333%" />
+        <div class="row" style="height: 45%">
+          <div class="col-4">
+            <b-button pill variant="dark" class="container-button">Load Map</b-button>
+          </div>
+          <div class="col-4">
+            <b-button pill variant="dark" class="container-button">Unload Map</b-button>
+          </div>
+          <div class="col-4">
+            <b-button pill variant="dark" class="container-button">Clear Map</b-button>
+          </div>
+        </div>
+        <div class="row" style="height: 3.333%" />
+        <div class="row" style="height: 45%">
+          <!--select v-model="selectedCharacter">
+            <option v-for="character in notOnMap" :key="character.id" :value="character.id">
+              {{ character.name }}
+            </option>
+          </select-->
+          <div class="col-6">
+            <b-form-select v-model="selectedCharacter" class="container-select">
+              <template #first>
+                <b-form-select-option :value="null" disabled>-- Select A Character --</b-form-select-option>
+              </template>
+              <b-form-select-option v-for="character in notOnMap" :key="character.id" :value="character.id">
+                {{ character.name }}
+              </b-form-select-option>
+            </b-form-select>
+          </div>
+          <div class="col-6">
+            <b-button pill variant="dark" class="container-button" @click="addToMap()">Add Character To Map</b-button>
+          </div>
+        </div>
+        <div class="row" style="height: 3.333%" />
       </div>
-      <div class="col">
-        Players on map:
+      <div class="col" style="height: 100%">
+        <p class="container-text">Players on map:</p>
         <ul>
           <li v-for="player in onMap" :key="player.id">
-            {{ player.name }}
+            <p class="container-text" style="display: inline">{{ player.name }}</p>
             <input type="color" v-model="player.mapColor" />
             {{ player.mapColor }}
           </li>
         </ul>
-        <select v-model="selectedCharacter">
-          <option v-for="character in notOnMap" :key="character.id" :value="character.id">
-            {{ character.name }}
-          </option>
-        </select>
-        <input type="button" value="Add" @click="addToMap()" />
       </div>
     </div>
+    <div style="height: 1vh" />
+    <!-- Map -->
     <div class="row">
       <div class="map-container">
         <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
@@ -33,10 +59,18 @@
           v-if="mapIsLoaded"
           :loadTilesWhileAnimating="true"
           :loadTilesWhileInteracting="true"
-          style="width: 100%; height: 100%; border: 10px solid red; position: absolute; left: 0px"
+          style="width: 100%; height: 100%; position: absolute; left: 0px"
           @pointermove="getMousePosition"
         >
-          <ol-view ref="view" :center="viewCenter" :rotation="rotation" :zoom="zoom" :projection="viewProjection" :extent="viewExtent" />
+          <ol-view
+            ref="view"
+            :center="viewCenter"
+            :rotation="rotation"
+            :zoom="zoom"
+            :projection="viewProjection"
+            :extent="viewExtent"
+            :smoothExtentConstraint="false"
+          />
 
           <ol-image-layer>
             <ol-source-image-static :url="imgUrl" :imageSize="imgSize" :imageExtent="imgExtent" :projection="imgProjection" />
@@ -185,17 +219,19 @@ loadMap("./maps/pinescot_farm_ground.png");
 //setMapProperties([5632, 4080]);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../index.scss";
+
 .map-controls {
-  width: 100%;
   height: 20vh;
+  @extend .subcontainer;
 }
 
 .map-container {
   width: 100%;
   height: 75vh;
   position: relative;
-  border: 10px solid green;
+  @extend .subcontainer;
 }
 
 .map-container > * {
