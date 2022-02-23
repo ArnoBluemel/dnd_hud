@@ -1,7 +1,7 @@
 <template>
-  <div class="map container">
+  <div class="map container" style="height: 100%">
     <!-- Stuff at the top -->
-    <div class="row container-fluid">
+    <div class="row container map-controls">
       <div class="col">
         <button class="button">Load map</button>
         <button class="button">Clear map</button>
@@ -29,11 +29,17 @@
     <div class="row">
       <div class="map-container">
         <!--img src="./../assets/pinescot_farm_ground.png" class="col" /-->
-        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="width: 100%; height: 100%" @pointermove="getMousePosition">
-          <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" :extent="[0, 0, 100, 100]" />
+        <ol-map
+          v-if="mapIsLoaded"
+          :loadTilesWhileAnimating="true"
+          :loadTilesWhileInteracting="true"
+          style="width: 100%; height: 100%; border: 10px solid red; position: absolute; left: 0px"
+          @pointermove="getMousePosition"
+        >
+          <ol-view ref="view" :center="viewCenter" :rotation="rotation" :zoom="zoom" :projection="viewProjection" :extent="viewExtent" />
 
           <ol-image-layer>
-            <ol-source-image-static :url="imgUrl" :imageSize="size" :imageExtent="extent" :projection="projection"></ol-source-image-static>
+            <ol-source-image-static :url="imgUrl" :imageSize="imgSize" :imageExtent="imgExtent" :projection="imgProjection" />
           </ol-image-layer>
 
           <ol-overlay
@@ -63,19 +69,38 @@ import { v4 as uuid } from "uuid";
 import { session } from "./../dnd_session";
 import { Character } from "../character";
 
+/// == Constants ==
+
+/// -- View --
 const zoom = ref(1);
 const rotation = ref(0);
 
-const size = ref([100, 100]);
-const center = ref([size.value[0] / 2, size.value[1] / 2]);
-const extent = ref([0, 0, ...size.value]);
-const projection = reactive({
-  code: "xkcd-image",
-  units: "pixels",
-  extent: extent,
-});
-const imgUrl = ref("./maps/pinescot_farm_ground.png");
+/// == Variables ==
 
+let mapIsLoaded = ref(false);
+
+/// -- Image --
+let imgUrl = ref("");
+//let imgUrl = ref("./maps/test_sideways.png");
+let imgSize = ref([0, 0]);
+let imgExtent = ref([0, 0, 0, 0]);
+let imgProjection = reactive({
+  code: "map image",
+  units: "pixels",
+  extent: imgExtent,
+});
+
+/// -- View --
+//const viewSize = ref([100, 100]);
+let viewCenter = ref([0, 0]);
+let viewExtent = ref([0, 0, 0, 0]);
+let viewProjection = reactive({
+  code: "map",
+  units: "pixels",
+  extent: viewExtent,
+});
+
+/// -- Characters --
 let name = ref("my name");
 let selectedCharacter = ref("");
 let selectedMapCharacter = ref<Character>();
@@ -83,11 +108,63 @@ let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
 let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 //let addToMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 
+/// == Functions ==
+
+function loadMap(url: string) {
+  imgUrl.value = url;
+
+  getImageSize(imgUrl.value).then(
+    (value) => {
+      console.log(value);
+      setMapProperties([value[0], value[1]]);
+      mapIsLoaded.value = true;
+    },
+    (error) => {}
+  );
+}
+
+function setMapProperties(dimensions: [number, number]) {
+  imgSize.value = [dimensions[0], dimensions[1]];
+  imgExtent.value = [0, 0, ...imgSize.value];
+  imgProjection = reactive({
+    code: "",
+    units: "pixels",
+    extent: imgExtent,
+  });
+
+  viewCenter.value = [imgSize.value[0] / 2, imgSize.value[1] / 2];
+  viewExtent.value = [0, 0, ...imgSize.value];
+  viewProjection = reactive({
+    code: "",
+    units: "pixels",
+    extent: viewExtent,
+  });
+}
+
+/// -- Image --
+
+function getImageSize(url: string) {
+  return new Promise<[number, number]>((resolve, reject) => {
+    const img = new Image();
+    img.onload = (ev) => {
+      resolve([img.width, img.height]);
+    };
+    img.onerror = (e) => reject(e);
+    img.src = url;
+  });
+}
+
+/// -- Characters --
 function addToMap() {
   selectedCharacter.value;
   let character = session.characters.find((v) => v.id == selectedCharacter.value);
   if (!character) return;
+  character.mapPosition = getRelativeMapPosition(50, 50);
   character.isOnMap = true;
+}
+
+function getRelativeMapPosition(percX: number, percY: number): [number, number] {
+  return [(imgSize.value[0] * percX) / 100, (imgSize.value[1] * percY) / 100];
 }
 
 function getMousePosition(ev: { coordinate?: [number, number] }) {
@@ -101,24 +178,24 @@ function selectCharacter(character: Character) {
   else selectedMapCharacter.value = undefined;
 }
 
-function getImageSize(url: string) {
-  return new Promise((resolve, reject) => {
-    const size = { width: 0, height: 0 };
-    const img = new Image();
-    img.onload = (ev) => {
-      resolve({ width: img.width, height: img.height });
-    };
-    img.onerror = (e) => reject(e);
-    img.src = url;
-  });
-}
+/// == Script ==
+
+loadMap("./maps/pinescot_farm_ground.png");
+
+//setMapProperties([5632, 4080]);
 </script>
 
 <style scoped>
+.map-controls {
+  width: 100%;
+  height: 20vh;
+}
+
 .map-container {
   width: 100%;
-  height: 800px;
+  height: 75vh;
   position: relative;
+  border: 10px solid green;
 }
 
 .map-container > * {
