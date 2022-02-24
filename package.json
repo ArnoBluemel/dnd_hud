@@ -19,8 +19,11 @@
     "sass-loader": "^12.6.0",
     "uuid": "^8.3.2",
     "vue": "^3.2.16",
+    "vue-file-selector": "^0.6.0",
     "vue3-colorpicker": "^2.0.4",
-    "vue3-openlayers": "^0.1.58"
+    "vue3-file-selector": "^1.0.3",
+    "vue3-openlayers": "^0.1.58",
+    "vue3-simple-file-input": "^1.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.2",

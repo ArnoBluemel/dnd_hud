@@ -7,22 +7,18 @@
         <div class="row" style="height: 3.333%" />
         <div class="row" style="height: 45%">
           <div class="col-4">
-            <b-button pill variant="dark" class="container-button">Load Map</b-button>
+            <b-button pill variant="dark" class="container-button" @click="triggerFileUpload()">Load Map</b-button>
+            <input id="fileInput" v-on:change="handleFileUpload()" type="file" accept="image/*" hidden />
           </div>
           <div class="col-4">
-            <b-button pill variant="dark" class="container-button">Unload Map</b-button>
+            <b-button pill variant="dark" class="container-button" @click="unloadMap()">Unload Map</b-button>
           </div>
           <div class="col-4">
-            <b-button pill variant="dark" class="container-button">Clear Map</b-button>
+            <b-button pill variant="dark" class="container-button" @click="removeAllCharactersFromMap()">Clear Map</b-button>
           </div>
         </div>
         <div class="row" style="height: 3.333%" />
         <div class="row" style="height: 45%">
-          <!--select v-model="selectedCharacter">
-            <option v-for="character in notOnMap" :key="character.id" :value="character.id">
-              {{ character.name }}
-            </option>
-          </select-->
           <div class="col-6">
             <b-form-select v-model="selectedCharacter" class="container-select">
               <template #first>
@@ -115,6 +111,8 @@ const rotation = ref(0);
 let mapIsLoaded = ref(false);
 
 /// -- Image --
+const file = ref<any>(null);
+
 let imgUrl = ref("");
 //let imgUrl = ref("./maps/test_sideways.png");
 let imgSize = ref([0, 0]);
@@ -136,7 +134,6 @@ let viewProjection = reactive({
 });
 
 /// -- Characters --
-let name = ref("my name");
 let selectedCharacter = ref("");
 let selectedMapCharacter = ref<Character>();
 let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
@@ -156,6 +153,10 @@ function loadMap(url: string) {
     },
     (error) => {}
   );
+}
+
+function unloadMap() {
+  mapIsLoaded.value = false;
 }
 
 function setMapProperties(dimensions: [number, number]) {
@@ -189,7 +190,22 @@ function getImageSize(url: string) {
   });
 }
 
+const handleFileUpload = async () => {
+  // debugger;
+  console.log(file);
+  console.log("selected file", file.value.files);
+  let url = URL.createObjectURL(file.value.files[0]);
+  console.log(url);
+  loadMap(url);
+};
+
+function triggerFileUpload() {
+  document.getElementById("fileInput")?.click();
+  console.log("clicked");
+}
+
 /// -- Characters --
+
 function addToMap() {
   //selectedCharacter.value;
   let character = session.characters.find((v) => v.id == selectedCharacter.value);
@@ -203,6 +219,12 @@ function removeFromMap(id: string) {
   if (!character) return;
   //character.mapPosition = getRelativeMapPosition(50, 50);
   character.isOnMap = false;
+}
+
+function removeAllCharactersFromMap() {
+  onMap.value.forEach((character) => {
+    character.isOnMap = false;
+  });
 }
 
 function getRelativeMapPosition(percX: number, percY: number): [number, number] {

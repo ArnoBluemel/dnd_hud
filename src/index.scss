@@ -72,6 +72,6 @@ body {
   -ms-overflow-style: none;
 }
 
-element::-webkit-scrollbar {
+.container-scrollable-list::-webkit-scrollbar {
   display: none;
 }
