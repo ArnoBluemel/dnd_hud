@@ -21,16 +21,18 @@
         <div class="row" style="height: 45%">
           <div class="col-6">
             <b-form-select v-model="selectedCharacter" class="container-select">
-              <template #first>
+              <!-- <template #first>
                 <b-form-select-option :value="null" disabled>-- Select A Character --</b-form-select-option>
-              </template>
+              </template> -->
               <b-form-select-option v-for="character in notOnMap" :key="character.id" :value="character.id">
                 {{ character.name }}
               </b-form-select-option>
             </b-form-select>
           </div>
           <div class="col-6">
-            <b-button pill variant="dark" class="container-button" @click="addToMap()">Add Character To Map</b-button>
+            <b-button pill variant="dark" class="container-button" @click="addToMap()" :disabled="!mapIsLoaded || !characterIsSelected"
+              >Add Character To Map</b-button
+            >
           </div>
         </div>
         <div class="row" style="height: 3.333%" />
@@ -135,6 +137,7 @@ let viewProjection = reactive({
 
 /// -- Characters --
 let selectedCharacter = ref("");
+let characterIsSelected = ref(false);
 let selectedMapCharacter = ref<Character>();
 let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
 let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
@@ -214,6 +217,8 @@ function addToMap() {
   if (!character) return;
   character.mapPosition = getRelativeMapPosition(50, 50);
   character.isOnMap = true;
+  selectedCharacter.value = "";
+  //characterIsSelected.value = false;
 }
 
 function removeFromMap(id: string) {
@@ -243,6 +248,13 @@ function selectCharacter(character: Character) {
   if (!selectedMapCharacter.value) selectedMapCharacter.value = character;
   else selectedMapCharacter.value = undefined;
 }
+
+watch(selectedCharacter, (newValue) => {
+  console.log(newValue);
+  console.log(characterIsSelected.value);
+  characterIsSelected.value = newValue != "";
+  console.log(characterIsSelected.value);
+});
 
 /// == Script ==
 
