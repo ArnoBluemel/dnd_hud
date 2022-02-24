@@ -45,7 +45,7 @@
             <div class="col-2">
               <color-picker v-model:pureColor="player.mapColor" shape="circle" />
             </div>
-            <p class="container-text col-7">{{ player.name }}</p>
+            <p class="container-text col-8">{{ player.name }}</p>
             <p class="col-2" @click="removeFromMap(player.id)">❌</p>
           </div>
         </ul>
