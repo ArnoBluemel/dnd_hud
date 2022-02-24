@@ -36,6 +36,13 @@ body {
   font-size: 7mm;
 }
 
+.container-text-alt {
+  filter: invert(100%);
+  font-size: 7mm;
+  @extend .container-text;
+  font-family: Redressed;
+}
+
 .container-button {
   @extend .container-element;
   width: 100%;
@@ -74,4 +81,14 @@ body {
 
 .container-scrollable-list::-webkit-scrollbar {
   display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

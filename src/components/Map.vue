@@ -1,6 +1,5 @@
 <template>
   <div class="map" style="height: 100%; width: 100%">
-    <div style="height: 2vh" />
     <!-- Map Controls -->
     <div class="row map-controls">
       <div class="col">

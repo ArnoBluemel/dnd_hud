@@ -8,6 +8,7 @@ import CharacterList from "./components/CharacterList.vue";
 
 <template>
   <div class="container">
+    <div style="height: 2vh" />
     <div class="row">
       <div class="col-3">
         <character-list />
