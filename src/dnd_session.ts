@@ -25,5 +25,20 @@ characterB.isOnMap = false;
 characterB.mapPosition = [50, 50];
 characterB.maxHealth = 69;
 characterB.currentHealth = 69;
-
 session.characters.push(characterB);
+
+let characterC = new Character();
+characterC.name = "Edgelord";
+characterC.isOnMap = false;
+characterC.mapPosition = [50, 50];
+characterC.maxHealth = 9001;
+characterC.currentHealth = 42;
+session.characters.push(characterC);
+
+let characterD = new Character();
+characterD.name = "Orrin the Bloodmonger";
+characterD.isOnMap = false;
+characterD.mapPosition = [50, 50];
+characterD.maxHealth = 501;
+characterD.currentHealth = 66;
+session.characters.push(characterD);

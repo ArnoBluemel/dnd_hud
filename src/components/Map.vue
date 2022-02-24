@@ -40,13 +40,14 @@
         <div class="row" style="height: 3.333%" />
       </div>
       <div class="col" style="height: 100%">
-        <p class="container-text">Players on map:</p>
-        <ul>
-          <li v-for="player in onMap" :key="player.id">
-            <p class="container-text" style="display: inline">{{ player.name }}</p>
-            <input type="color" v-model="player.mapColor" />
-            {{ player.mapColor }}
-          </li>
+        <ul class="container-scrollable-list" style="height: 100%">
+          <div v-for="player in onMap" :key="player.id" class="row">
+            <div class="col-2">
+              <color-picker v-model:pureColor="player.mapColor" shape="circle" />
+            </div>
+            <p class="container-text col-7">{{ player.name }}</p>
+            <p class="col-2" @click="removeFromMap(player.id)">❌</p>
+          </div>
         </ul>
       </div>
     </div>
@@ -190,11 +191,18 @@ function getImageSize(url: string) {
 
 /// -- Characters --
 function addToMap() {
-  selectedCharacter.value;
+  //selectedCharacter.value;
   let character = session.characters.find((v) => v.id == selectedCharacter.value);
   if (!character) return;
   character.mapPosition = getRelativeMapPosition(50, 50);
   character.isOnMap = true;
+}
+
+function removeFromMap(id: string) {
+  let character = session.characters.find((v) => v.id == id);
+  if (!character) return;
+  //character.mapPosition = getRelativeMapPosition(50, 50);
+  character.isOnMap = false;
 }
 
 function getRelativeMapPosition(percX: number, percY: number): [number, number] {
