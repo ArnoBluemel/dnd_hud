@@ -8,7 +8,7 @@
         <div class="row" style="height: 45%">
           <div class="col-4">
             <b-button pill variant="dark" class="container-button" @click="triggerFileUpload()">Load Map</b-button>
-            <input id="fileInput" v-on:change="handleFileUpload()" type="file" accept="image/*" hidden />
+            <input ref="file" id="fileInput" v-on:change="handleFileUpload()" type="file" accept="image/*" hidden />
           </div>
           <div class="col-4">
             <b-button pill variant="dark" class="container-button" @click="unloadMap()">Unload Map</b-button>
@@ -142,6 +142,8 @@ let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 
 /// == Functions ==
 
+/// -- Image --
+
 function loadMap(url: string) {
   imgUrl.value = url;
 
@@ -157,6 +159,7 @@ function loadMap(url: string) {
 
 function unloadMap() {
   mapIsLoaded.value = false;
+  removeAllCharactersFromMap();
 }
 
 function setMapProperties(dimensions: [number, number]) {
@@ -177,8 +180,6 @@ function setMapProperties(dimensions: [number, number]) {
   });
 }
 
-/// -- Image --
-
 function getImageSize(url: string) {
   return new Promise<[number, number]>((resolve, reject) => {
     const img = new Image();
@@ -192,6 +193,7 @@ function getImageSize(url: string) {
 
 const handleFileUpload = async () => {
   // debugger;
+  removeAllCharactersFromMap();
   console.log(file);
   console.log("selected file", file.value.files);
   let url = URL.createObjectURL(file.value.files[0]);
