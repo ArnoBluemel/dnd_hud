@@ -92,3 +92,23 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.hover-text-base {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-text-base .hover-text {
+  visibility: hidden;
+  font-size: large;
+  font-family: Redressed;
+  color: white;
+  background-color: black;
+  width: fit-content;
+  border: 2px solid white;
+  border-radius: 30%;
+}
+
+.hover-text-base:hover .hover-text {
+  visibility: visible;
+}

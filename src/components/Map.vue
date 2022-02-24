@@ -82,10 +82,11 @@
             @pointerdown="selectCharacter(character)"
           >
             <template v-slot="slotProps">
-              <div class="map-character" :style="{ 'background-color': character.mapColor, color: character.mapColor }">
+              <div class="map-character hover-text-base" :style="{ 'background-color': character.mapColor, color: character.mapColor }">
                 <div class="map-character-name" :style="{ color: character.mapColor }">
                   {{ character.name.substring(0, 2) }}
                 </div>
+                <p class="hover-text">{{ character.name }}</p>
               </div>
             </template>
           </ol-overlay>
