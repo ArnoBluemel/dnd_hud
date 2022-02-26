@@ -68,6 +68,12 @@ body {
   border-width: 20px;
 }
 
+.container-text-input {
+  @extend .container-element;
+  border-width: 5px;
+  background-color: transparent;
+}
+
 .container-scrollable-list {
   @extend .container-element;
   border-width: 0px;

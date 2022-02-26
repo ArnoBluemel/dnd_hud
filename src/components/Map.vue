@@ -152,7 +152,6 @@ function loadMap(url: string) {
 
   getImageSize(imgUrl.value).then(
     (value) => {
-      console.log(value);
       setMapProperties([value[0], value[1]]);
       mapIsLoaded.value = true;
     },
@@ -195,18 +194,13 @@ function getImageSize(url: string) {
 }
 
 const handleFileUpload = async () => {
-  // debugger;
   removeAllCharactersFromMap();
-  console.log(file);
-  console.log("selected file", file.value.files);
   let url = URL.createObjectURL(file.value.files[0]);
-  console.log(url);
   loadMap(url);
 };
 
 function triggerFileUpload() {
   document.getElementById("fileInput")?.click();
-  console.log("clicked");
 }
 
 /// -- Characters --
@@ -215,7 +209,7 @@ function addToMap() {
   //selectedCharacter.value;
   let character = session.characters.find((v) => v.id == selectedCharacter.value);
   if (!character) return;
-  character.mapPosition = getRelativeMapPosition(50, 50);
+  character.mapPosition = getRelativeMapPosition(character.mapPosition[0], character.mapPosition[1]);
   character.isOnMap = true;
   selectedCharacter.value = "";
   //characterIsSelected.value = false;
@@ -224,7 +218,6 @@ function addToMap() {
 function removeFromMap(id: string) {
   let character = session.characters.find((v) => v.id == id);
   if (!character) return;
-  //character.mapPosition = getRelativeMapPosition(50, 50);
   character.isOnMap = false;
 }
 
