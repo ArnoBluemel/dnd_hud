@@ -77,7 +77,6 @@
           <ol-overlay
             v-for="character in onMap"
             class="map-character-overlay"
-            :key="character.id"
             :position="[character.mapPosition[0], character.mapPosition[1]]"
             @pointerdown="selectCharacter(character)"
           >
