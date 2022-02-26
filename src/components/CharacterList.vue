@@ -62,7 +62,14 @@
           <div class="row">
             <div class="col-4" style="text-align: right; vertical-align: bottom; font-size: 10mm">♥️</div>
             <div class="col-6">
-              <b-form-input id="hp-input" class="container-text-input" v-model="newCharacterHP" @input="validateNewCharacterHP()"></b-form-input>
+              <!-- <b-form-input id="hp-input" class="container-text-input" :value="newCharacterHP" @input="validateNewCharacterHP($event)"></b-form-input> -->
+              <input
+                type="text"
+                id="hp-input"
+                class="container-text-input"
+                :value="newCharacterHP"
+                @input="(ev) => validateNewCharacterHP(ev.target as any)"
+              />
             </div>
             <div class="col-4"></div>
           </div>
@@ -128,11 +135,11 @@ function validateNewCharacterName() {
   newCharacterNameOkay.value = newCharacterName.value.trim().length > 0;
 }
 
-function validateNewCharacterHP() {
-  console.log(newCharacterHP.value);
-  newCharacterHP.value = newCharacterHP.value.replace(/\D/g, "");
-  console.log(newCharacterHP.value);
-  newCharacterHPOkay.value = Number(newCharacterHP.value) > 0;
+function validateNewCharacterHP(target: { value: string }) {
+  console.log(target);
+  newCharacterHP.value = target.value.replace(/\D/g, "");
+  newCharacterHPOkay.value = +newCharacterHP.value > 0;
+  target.value = newCharacterHP.value;
 }
 </script>
 
