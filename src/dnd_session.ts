@@ -9,9 +9,8 @@ export class DndSession {
     //selectedCharacter.value;
     let character = session.characters.find((v) => v.id == id);
     if (!character) return;
-    character.mapPosition = this.getRelativeMapPosition(character.mapPosition[0], character.mapPosition[1]);
-    character.isOnMap = true;
-    //characterIsSelected.value = false;
+    if (!character.wasOnMapBefore) character.mapPosition = this.getRelativeMapPosition(character.mapPosition[0], character.mapPosition[1]);
+    character.wasOnMapBefore = character.isOnMap = true;
   }
 
   public removeFromMap(id: string) {
@@ -20,8 +19,9 @@ export class DndSession {
     character.isOnMap = false;
   }
 
-  public removeAllCharactersFromMap() {
+  public removeAllCharactersFromMap(reset: boolean) {
     this.characters.forEach((character) => {
+      if (reset) character.wasOnMapBefore = false;
       character.isOnMap = false;
     });
   }

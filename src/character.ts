@@ -7,6 +7,7 @@ export class Character {
   name: string = "";
   charType: number = 0; // 0: Player, 1: Monster, 2: NPC
   isOnMap: boolean = false;
+  wasOnMapBefore: boolean = false;
   mapPosition: [number, number] = [50, 50];
   mapColor: string = "#000000";
   initiative: number = 0;

@@ -14,7 +14,7 @@
                 <b-button pill variant="dark" class="map-button" @click="unloadMap()">Unload Map</b-button>
               </div>
               <div class="col-4">
-                <b-button pill variant="dark" class="map-button" @click="() => session.removeAllCharactersFromMap()">Clear Map</b-button>
+                <b-button pill variant="dark" class="map-button" @click="() => session.removeAllCharactersFromMap(false)">Clear Map</b-button>
               </div>
             </div>
             <div class="row map-control-row">
@@ -170,7 +170,7 @@ function loadMap(url: string) {
 
 function unloadMap() {
   mapIsLoaded.value = false;
-  session.removeAllCharactersFromMap();
+  session.removeAllCharactersFromMap(true);
 }
 
 function setMapProperties(dimensions: [number, number]) {
@@ -203,7 +203,7 @@ function getImageSize(url: string) {
 }
 
 const handleFileUpload = async () => {
-  session.removeAllCharactersFromMap();
+  session.removeAllCharactersFromMap(true);
   let url = URL.createObjectURL(file.value.files[0]);
   loadMap(url);
 };
