@@ -38,7 +38,7 @@
     <div class="add-character-container">
       <div class="row character-content">
         <div class="row">
-          <div class="col-2 container-text">Name:</div>
+          <div class="col-2 container-text" :style="!addingCharacter ? 'opacity: 0.6' : ''">Name:</div>
           <div class="col-10">
             <input class="container-text-input" style="width: 98%" v-model="newCharacterName" @input="validateNewCharacterName()" />
           </div>
@@ -55,7 +55,9 @@
             ></b-form-radio-group>
           </div>
           <div class="row">
-            <div class="col-4" style="text-align: right; vertical-align: bottom; font-size: 10mm">♥️</div>
+            <div class="col-4" style="text-align: right; vertical-align: bottom; font-size: 10mm" :style="!addingCharacter ? 'opacity: 0.6' : ''">
+              ♥️
+            </div>
             <div class="col-6">
               <!-- <b-form-input id="hp-input" class="container-text-input" :value="newCharacterHP" @input="validateNewCharacterHP($event)"></b-form-input> -->
               <input
