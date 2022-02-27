@@ -1,51 +1,52 @@
 <template>
   <div class="map" style="height: 100%; width: 100%">
     <!-- Map Controls -->
-    <div class="row map-controls">
-      <div class="col">
-        <div class="row" style="height: 3.333%" />
-        <div class="row" style="height: 45%">
-          <div class="col-4">
-            <b-button pill variant="dark" class="container-button" @click="triggerFileUpload()">Load Map</b-button>
-            <input ref="file" id="fileInput" v-on:change="handleFileUpload()" type="file" accept="image/*" hidden />
-          </div>
-          <div class="col-4">
-            <b-button pill variant="dark" class="container-button" @click="unloadMap()">Unload Map</b-button>
-          </div>
-          <div class="col-4">
-            <b-button pill variant="dark" class="container-button" @click="removeAllCharactersFromMap()">Clear Map</b-button>
-          </div>
-        </div>
-        <div class="row" style="height: 3.333%" />
-        <div class="row" style="height: 45%">
-          <div class="col-6">
-            <b-form-select v-model="selectedCharacter" class="container-select">
-              <!-- <template #first>
+    <div class="row">
+      <div class="map-controls">
+        <div class="row" style="height: 100%">
+          <div class="col-7">
+            <div class="row map-control-row">
+              <div class="col-4">
+                <b-button pill variant="dark" class="map-button" @click="triggerFileUpload()">Load Map</b-button>
+                <input ref="file" id="fileInput" v-on:change="handleFileUpload()" type="file" accept="image/*" hidden />
+              </div>
+              <div class="col-4">
+                <b-button pill variant="dark" class="map-button" @click="unloadMap()">Unload Map</b-button>
+              </div>
+              <div class="col-4">
+                <b-button pill variant="dark" class="map-button" @click="removeAllCharactersFromMap()">Clear Map</b-button>
+              </div>
+            </div>
+            <div class="row map-control-row">
+              <div class="col-6">
+                <b-form-select v-model="selectedCharacter" class="map-select">
+                  <!-- <template #first>
                 <b-form-select-option :value="null" disabled>-- Select A Character --</b-form-select-option>
               </template> -->
-              <b-form-select-option v-for="character in notOnMap" :key="character.id" :value="character.id">
-                {{ character.name }}
-              </b-form-select-option>
-            </b-form-select>
+                  <b-form-select-option v-for="character in notOnMap" :key="character.id" :value="character.id">
+                    {{ character.name }}
+                  </b-form-select-option>
+                </b-form-select>
+              </div>
+              <div class="col-6">
+                <b-button pill variant="dark" class="map-button" @click="addToMap()" :disabled="!mapIsLoaded || !characterIsSelected"
+                  >Add Character To Map</b-button
+                >
+              </div>
+            </div>
           </div>
-          <div class="col-6">
-            <b-button pill variant="dark" class="container-button" @click="addToMap()" :disabled="!mapIsLoaded || !characterIsSelected"
-              >Add Character To Map</b-button
-            >
+          <div class="col-5" style="height: 100%">
+            <ul class="map-scrollable-list">
+              <div v-for="player in onMap" :key="player.id" class="row">
+                <div class="col-2">
+                  <color-picker v-model:pureColor="player.mapColor" shape="circle" />
+                </div>
+                <p class="container-text col-8">{{ player.name }}</p>
+                <p class="col-2" @click="removeFromMap(player.id)">❌</p>
+              </div>
+            </ul>
           </div>
         </div>
-        <div class="row" style="height: 3.333%" />
-      </div>
-      <div class="col" style="height: 100%">
-        <ul class="container-scrollable-list" style="height: 100%">
-          <div v-for="player in onMap" :key="player.id" class="row">
-            <div class="col-2">
-              <color-picker v-model:pureColor="player.mapColor" shape="circle" />
-            </div>
-            <p class="container-text col-8">{{ player.name }}</p>
-            <p class="col-2" @click="removeFromMap(player.id)">❌</p>
-          </div>
-        </ul>
       </div>
     </div>
     <div style="height: 1vh" />
@@ -251,14 +252,13 @@ watch(selectedCharacter, (newValue) => {
 /// == Script ==
 
 loadMap("./maps/pinescot_farm_ground.png");
-
-//setMapProperties([5632, 4080]);
 </script>
 
 <style lang="scss" scoped>
 @import "../index.scss";
 
 .map-controls {
+  width: 100%;
   height: 20vh;
   @extend .subcontainer;
 }
@@ -295,5 +295,26 @@ loadMap("./maps/pinescot_farm_ground.png");
 
 .map-character-overlay {
   transform: translate(-24px, -24px);
+}
+
+.map-button {
+  @extend .container-button;
+  height: 100%;
+}
+
+.map-select {
+  @extend .container-select;
+  height: 100%;
+}
+
+.map-control-row {
+  height: calc(50% - 7.5px);
+  margin-top: 5px;
+}
+
+.map-scrollable-list {
+  @extend .container-scrollable-list;
+  height: calc(100% - 20px);
+  margin-top: 10px;
 }
 </style>
