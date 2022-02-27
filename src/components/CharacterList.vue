@@ -2,7 +2,7 @@
   <div class="character-list-container">
     <div class="row character-content">
       <div class="container-scrollable-list">
-        <div v-for="character in session.characters" :key="character.id" class="row">
+        <div v-for="character in session.characters" :key="character.id" class="row" style="height: 50px">
           <!-- <div class="row"> -->
           <div class="col-1 container-text-alt" style="margin-left: 2%">
             <a v-if="character.charType == 0">⚔️</a>
@@ -10,20 +10,20 @@
             <a v-else-if="character.charType == 2">🛡️</a>
           </div>
           <div class="col-6 container-text">{{ character.name }}</div>
-          <div class="col-4 container-text-alt" style="font-size: 4mm" @click="character.editHealth(true)">
-            ♥️:
-            <br />
+          <div class="col-4 container-text-alt" style="font-size: 4mm" @click="editHealth(character, true)">
+            <div>♥️:</div>
             <input
-              type="number"
-              v-model="character.currentHealth"
+              :id="'health' + character.id"
+              :value="character.currentHealth"
+              @input="(ev) => character.currentHealth = Number(filterNotNumbers(ev.target as any))"
               v-if="character.editingHealth"
-              @focusout="character.editHealth(false)"
+              @focusout="editHealth(character, false)"
               style="width: 50px"
               min="0"
             />
-            <a v-if="!character.editingHealth">{{ character.currentHealth }}</a>
+            <span v-if="!character.editingHealth">{{ character.currentHealth }}</span>
             /
-            <a>{{ character.maxHealth }}</a>
+            <span>{{ character.maxHealth }}</span>
           </div>
           <!-- </div> -->
         </div>
@@ -93,7 +93,7 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { Character } from "../character";
-import { ref, watch } from "vue";
+import { Ref, ref, watch } from "vue";
 import { session } from "./../dnd_session";
 
 const addingCharacter = ref(false);
@@ -143,10 +143,25 @@ function validateNewCharacterName() {
 }
 
 function validateNewCharacterHP(target: { value: string }) {
-  console.log(target);
-  newCharacterHP.value = target.value.replace(/\D/g, "");
+  newCharacterHP.value = filterNotNumbers(target); //target.value.replace(/\D/g, "");
   newCharacterHPOkay.value = +newCharacterHP.value > 0;
-  target.value = newCharacterHP.value;
+  //target.value = newCharacterHP.value;
+}
+
+function filterNotNumbers(target: { value: string }): string {
+  let newValue = target.value.replace(/\D/g, "");
+  target.value = newValue;
+  return newValue;
+}
+
+function editHealth(character: Character, val: boolean) {
+  if (character.editingHealth == val) return;
+  character.editHealth(val);
+  if (val)
+    new Promise(async () => {
+      await new Promise((f) => setTimeout(f, 1));
+      document.getElementById("health" + character.id)?.focus();
+    });
 }
 </script>
 

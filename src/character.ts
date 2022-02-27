@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 export class Character {
   constructor() {}
 
-  id: string = uuid();
+  id: string = uuid().replaceAll("-", "");
   name: string = "";
   charType: number = 0; // 0: Player, 1: Monster, 2: NPC
   isOnMap: boolean = false;
