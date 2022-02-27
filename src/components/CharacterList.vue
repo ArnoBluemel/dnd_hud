@@ -84,7 +84,7 @@
           >
         </div>
         <div class="col-6">
-          <b-button pill variant="dark" class="character-button">Cancel</b-button>
+          <b-button pill variant="dark" class="character-button" @click="endAddCharacter()">Cancel</b-button>
         </div>
       </div>
     </div>
@@ -134,6 +134,10 @@ function saveNewCharacter() {
 
   session.characters.push(newCharacter);
 
+  endAddCharacter();
+}
+
+function endAddCharacter() {
   resetNewCharacter();
   resetValidation();
 
