@@ -287,9 +287,7 @@ loadMap("./maps/pinescot_farm_ground.png");
 }
 
 .map-character-name {
-  font-weight: bold;
-  font-size: 24px;
-  filter: invert(100%);
+  @extend .container-text-alt;
   user-select: none;
 }
 

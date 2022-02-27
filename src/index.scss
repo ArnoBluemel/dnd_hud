@@ -108,14 +108,19 @@ input[type="number"] {
 }
 
 .hover-text-base .hover-text {
+  @extend .container-text;
   visibility: hidden;
-  font-size: large;
-  font-family: Redressed;
+  font-size: 7mm;
   color: white;
-  background-color: black;
-  width: fit-content;
+  background-color: rgba(0, 0, 0, 0.7);
   border: 2px solid white;
   border-radius: 30%;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  width: fit-content;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
 }
 
 .hover-text-base:hover .hover-text {
