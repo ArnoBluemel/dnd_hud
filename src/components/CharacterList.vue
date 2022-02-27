@@ -3,29 +3,29 @@
     <div class="row character-content">
       <div class="container-scrollable-list">
         <div v-for="character in session.characters" :key="character.id" class="row">
-          <div class="row">
-            <div class="col-1 container-text-alt" style="margin-left: 2%">
-              <a v-if="character.charType == 0">⚔️</a>
-              <a v-else-if="character.charType == 1">💀</a>
-              <a v-else-if="character.charType == 2">🛡️</a>
-            </div>
-            <div class="col-6 container-text">{{ character.name }}</div>
-            <div class="col-3 container-text-alt" style="font-size: 4mm" @click="character.editHealth(true)">
-              ♥️:
-              <br />
-              <input
-                type="number"
-                v-model="character.currentHealth"
-                v-if="character.editingHealth"
-                @focusout="character.editHealth(false)"
-                style="width: 50px"
-                min="0"
-              />
-              <a v-if="!character.editingHealth">{{ character.currentHealth }}</a>
-              /
-              <a>{{ character.maxHealth }}</a>
-            </div>
+          <!-- <div class="row"> -->
+          <div class="col-1 container-text-alt" style="margin-left: 2%">
+            <a v-if="character.charType == 0">⚔️</a>
+            <a v-else-if="character.charType == 1">💀</a>
+            <a v-else-if="character.charType == 2">🛡️</a>
           </div>
+          <div class="col-6 container-text">{{ character.name }}</div>
+          <div class="col-4 container-text-alt" style="font-size: 4mm" @click="character.editHealth(true)">
+            ♥️:
+            <br />
+            <input
+              type="number"
+              v-model="character.currentHealth"
+              v-if="character.editingHealth"
+              @focusout="character.editHealth(false)"
+              style="width: 50px"
+              min="0"
+            />
+            <a v-if="!character.editingHealth">{{ character.currentHealth }}</a>
+            /
+            <a>{{ character.maxHealth }}</a>
+          </div>
+          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -40,12 +40,7 @@
         <div class="row">
           <div class="col-2 container-text">Name:</div>
           <div class="col-10">
-            <b-form-input
-              class="container-text-input"
-              style="width: 98%"
-              v-model="newCharacterName"
-              @input="validateNewCharacterName()"
-            ></b-form-input>
+            <input class="container-text-input" style="width: 98%" v-model="newCharacterName" @input="validateNewCharacterName()" />
           </div>
         </div>
         <div class="row">
@@ -77,7 +72,14 @@
       </div>
       <div class="row character-controls">
         <div class="col-6">
-          <b-button pill variant="dark" class="character-button" @click="addNewCharacter()">Save</b-button>
+          <b-button
+            pill
+            variant="dark"
+            class="character-button"
+            @click="saveNewCharacter()"
+            :disabled="!(newCharacterNameOkay && newCharacterHPOkay && [0, 1, 2].includes(newCharacterType))"
+            >Save</b-button
+          >
         </div>
         <div class="col-6">
           <b-button pill variant="dark" class="character-button">Cancel</b-button>
@@ -100,7 +102,6 @@ const newCharacterNameOkay = ref<boolean>(false);
 const newCharacterHP = ref<string>("");
 const newCharacterHPOkay = ref<boolean>(false);
 const newCharacterType = ref<number>(-1);
-const newCharacterTypeOkay = ref<boolean>(false);
 
 const characterTypes = [
   { text: "⚔️", value: 0 }, //  Player
@@ -118,7 +119,12 @@ function resetNewCharacter() {
   newCharacterType.value = -1;
 }
 
-function addNewCharacter() {
+function resetValidation() {
+  newCharacterNameOkay.value = false;
+  newCharacterHPOkay.value = false;
+}
+
+function saveNewCharacter() {
   let newCharacter = new Character();
   newCharacter.name = newCharacterName.value.trim();
   newCharacter.currentHealth = newCharacter.maxHealth = Number(newCharacterHP.value);
@@ -127,6 +133,7 @@ function addNewCharacter() {
   session.characters.push(newCharacter);
 
   resetNewCharacter();
+  resetValidation();
 
   toggleAddCharacter(false);
 }

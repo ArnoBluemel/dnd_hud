@@ -29,6 +29,7 @@ body {
 .container-element {
   border: 10px ridge #635fa4;
   border-radius: 15px;
+  margin: 0px;
 }
 
 .container-text {
@@ -37,8 +38,6 @@ body {
 }
 
 .container-text-alt {
-  filter: invert(100%);
-  font-size: 7mm;
   @extend .container-text;
   font-family: Redressed;
 }
@@ -70,6 +69,10 @@ body {
 
 .container-text-input {
   @extend .container-element;
+  @extend .container-text-alt;
+  filter: none;
+  color: wheat;
+  width: 100%;
   border-width: 5px;
   background-color: transparent;
 }
