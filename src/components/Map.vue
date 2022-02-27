@@ -33,8 +33,13 @@
                   pill
                   variant="dark"
                   class="map-button"
-                  @click="() => session.addCharacterToMap(selectedCharacter)"
-                  :disabled="!mapIsLoaded || !characterIsSelected"
+                  @click="
+                    () => {
+                      session.addCharacterToMap(selectedCharacter);
+                      selectedCharacter = '';
+                    }
+                  "
+                  :disabled="!mapIsLoaded || selectedCharacter == ''"
                   >Add Character To Map</b-button
                 >
               </div>
@@ -42,12 +47,12 @@
           </div>
           <div class="col-5" style="height: 100%">
             <ul class="map-scrollable-list">
-              <div v-for="player in onMap" :key="player.id" class="row">
+              <div v-for="character in onMap" :key="character.id" class="row">
                 <div class="col-2">
-                  <color-picker v-model:pureColor="player.mapColor" shape="circle" />
+                  <color-picker v-model:pureColor="character.mapColor" shape="circle" />
                 </div>
-                <p class="container-text col-8">{{ player.name }}</p>
-                <p class="col-2" @click="session.removeFromMap(player.id)">❌</p>
+                <p class="container-text col-8">{{ character.name }}</p>
+                <p class="col-2" @click="session.removeFromMap(character.id)">❌</p>
               </div>
             </ul>
           </div>
@@ -115,15 +120,15 @@ const rotation = ref(0);
 
 /// == Variables ==
 
-let mapIsLoaded = ref(false);
+const mapIsLoaded = ref(false);
 
 /// -- Image --
 const file = ref<any>(null);
 
-let imgUrl = ref("");
+const imgUrl = ref("");
 //let imgUrl = ref("./maps/test_sideways.png");
-let imgSize = ref([0, 0]);
-let imgExtent = ref([0, 0, 0, 0]);
+const imgSize = ref([0, 0]);
+const imgExtent = ref([0, 0, 0, 0]);
 let imgProjection = reactive({
   code: "map image",
   units: "pixels",
@@ -132,8 +137,8 @@ let imgProjection = reactive({
 
 /// -- View --
 //const viewSize = ref([100, 100]);
-let viewCenter = ref([0, 0]);
-let viewExtent = ref([0, 0, 0, 0]);
+const viewCenter = ref([0, 0]);
+const viewExtent = ref([0, 0, 0, 0]);
 let viewProjection = reactive({
   code: "map",
   units: "pixels",
@@ -141,11 +146,11 @@ let viewProjection = reactive({
 });
 
 /// -- Characters --
-let selectedCharacter = ref("");
-let characterIsSelected = ref(false);
-let selectedMapCharacter = ref<Character>();
-let onMap = computed(() => session.characters.filter((v) => v.isOnMap));
-let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
+const selectedCharacter = ref("");
+//const characterIsSelected = ref(false);
+const selectedMapCharacter = ref<Character>();
+const onMap = computed(() => session.characters.filter((v) => v.isOnMap));
+const notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 //let addToMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 
 /// == Functions ==
@@ -220,9 +225,9 @@ function selectCharacter(character: Character) {
   else selectedMapCharacter.value = undefined;
 }
 
-watch(selectedCharacter, (newValue) => {
-  characterIsSelected.value = newValue != "";
-});
+//watch(selectedCharacter, (newValue) => {
+//  characterIsSelected.value = newValue != "";
+//});
 
 /// == Script ==
 

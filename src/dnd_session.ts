@@ -15,7 +15,7 @@ export class DndSession {
   }
 
   public removeFromMap(id: string) {
-    let character = session.characters.find((v) => v.id == id);
+    let character = this.characters.find((v) => v.id == id);
     if (!character) return;
     character.isOnMap = false;
   }

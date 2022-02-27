@@ -4,7 +4,17 @@
       <div class="container-scrollable-list">
         <div v-for="character in session.characters" :key="character.id" class="row" style="height: 50px">
           <!-- <div class="row"> -->
-          <div class="col-1 container-text-alt" style="margin-left: 2%" :style="!character.isOnMap ? 'opacity: 0.3' : ''">
+          <div
+            class="col-1 container-text-alt"
+            style="margin-left: 2%"
+            :style="!character.isOnMap ? 'opacity: 0.3' : ''"
+            @click="
+              () => {
+                if (character.isOnMap) session.removeFromMap(character.id);
+                else session.addCharacterToMap(character.id);
+              }
+            "
+          >
             <a v-if="character.charType == 0">⚔️</a>
             <a v-else-if="character.charType == 1">💀</a>
             <a v-else-if="character.charType == 2">🛡️</a>
