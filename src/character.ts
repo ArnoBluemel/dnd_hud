@@ -18,4 +18,8 @@ export class Character {
   public editHealth(val: boolean) {
     this.editingHealth = val;
   }
+
+  public resetMapPosition() {
+    this.mapPosition = [50, 50];
+  }
 }

@@ -21,7 +21,10 @@ export class DndSession {
 
   public removeAllCharactersFromMap(reset: boolean) {
     this.characters.forEach((character) => {
-      if (reset) character.wasOnMapBefore = false;
+      if (reset) {
+        character.wasOnMapBefore = false;
+        character.resetMapPosition();
+      }
       character.isOnMap = false;
     });
   }

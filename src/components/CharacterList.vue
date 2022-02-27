@@ -65,7 +65,11 @@
             ></b-form-radio-group>
           </div>
           <div class="row">
-            <div class="col-4" style="text-align: right; vertical-align: bottom; font-size: 10mm" :style="!addingCharacter ? 'opacity: 0.6' : ''">
+            <div
+              class="col-4 container-text"
+              style="text-align: right; vertical-align: bottom; font-size: 10mm"
+              :style="!addingCharacter ? 'opacity: 0.6' : ''"
+            >
               ♥️
             </div>
             <div class="col-6">
