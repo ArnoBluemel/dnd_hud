@@ -14,7 +14,7 @@
                 <b-button pill variant="dark" class="map-button" @click="unloadMap()">Unload Map</b-button>
               </div>
               <div class="col-4">
-                <b-button pill variant="dark" class="map-button" @click="removeAllCharactersFromMap()">Clear Map</b-button>
+                <b-button pill variant="dark" class="map-button" @click="() => session.removeAllCharactersFromMap()">Clear Map</b-button>
               </div>
             </div>
             <div class="row map-control-row">
@@ -29,7 +29,12 @@
                 </b-form-select>
               </div>
               <div class="col-6">
-                <b-button pill variant="dark" class="map-button" @click="addToMap()" :disabled="!mapIsLoaded || !characterIsSelected"
+                <b-button
+                  pill
+                  variant="dark"
+                  class="map-button"
+                  @click="() => session.addCharacterToMap(selectedCharacter)"
+                  :disabled="!mapIsLoaded || !characterIsSelected"
                   >Add Character To Map</b-button
                 >
               </div>
@@ -42,7 +47,7 @@
                   <color-picker v-model:pureColor="player.mapColor" shape="circle" />
                 </div>
                 <p class="container-text col-8">{{ player.name }}</p>
-                <p class="col-2" @click="removeFromMap(player.id)">❌</p>
+                <p class="col-2" @click="session.removeFromMap(player.id)">❌</p>
               </div>
             </ul>
           </div>
@@ -146,7 +151,6 @@ let notOnMap = computed(() => session.characters.filter((v) => !v.isOnMap));
 /// == Functions ==
 
 /// -- Image --
-
 function loadMap(url: string) {
   imgUrl.value = url;
 
@@ -161,11 +165,11 @@ function loadMap(url: string) {
 
 function unloadMap() {
   mapIsLoaded.value = false;
-  removeAllCharactersFromMap();
+  session.removeAllCharactersFromMap();
 }
 
 function setMapProperties(dimensions: [number, number]) {
-  imgSize.value = [dimensions[0], dimensions[1]];
+  imgSize.value = session.mapSize = [dimensions[0], dimensions[1]];
   imgExtent.value = [0, 0, ...imgSize.value];
   imgProjection = reactive({
     code: "",
@@ -194,7 +198,7 @@ function getImageSize(url: string) {
 }
 
 const handleFileUpload = async () => {
-  removeAllCharactersFromMap();
+  session.removeAllCharactersFromMap();
   let url = URL.createObjectURL(file.value.files[0]);
   loadMap(url);
 };
@@ -204,32 +208,6 @@ function triggerFileUpload() {
 }
 
 /// -- Characters --
-
-function addToMap() {
-  //selectedCharacter.value;
-  let character = session.characters.find((v) => v.id == selectedCharacter.value);
-  if (!character) return;
-  character.mapPosition = getRelativeMapPosition(character.mapPosition[0], character.mapPosition[1]);
-  character.isOnMap = true;
-  selectedCharacter.value = "";
-  //characterIsSelected.value = false;
-}
-
-function removeFromMap(id: string) {
-  let character = session.characters.find((v) => v.id == id);
-  if (!character) return;
-  character.isOnMap = false;
-}
-
-function removeAllCharactersFromMap() {
-  onMap.value.forEach((character) => {
-    character.isOnMap = false;
-  });
-}
-
-function getRelativeMapPosition(percX: number, percY: number): [number, number] {
-  return [(imgSize.value[0] * percX) / 100, (imgSize.value[1] * percY) / 100];
-}
 
 function getMousePosition(ev: { coordinate?: [number, number] }) {
   if (ev.coordinate && selectedMapCharacter.value) {
@@ -243,10 +221,7 @@ function selectCharacter(character: Character) {
 }
 
 watch(selectedCharacter, (newValue) => {
-  console.log(newValue);
-  console.log(characterIsSelected.value);
   characterIsSelected.value = newValue != "";
-  console.log(characterIsSelected.value);
 });
 
 /// == Script ==
