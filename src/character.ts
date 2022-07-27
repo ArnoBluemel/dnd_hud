@@ -10,10 +10,11 @@ export class Character {
   wasOnMapBefore: boolean = false;
   mapPosition: [number, number] = [50, 50];
   mapColor: string = "#000000";
-  initiative: number = 0;
   currentHealth: number = 0;
   editingHealth: boolean = false;
   maxHealth: number = 0;
+  isInCombat: boolean = false;
+  initiative: number = 0;
 
   public editHealth(val: boolean) {
     this.editingHealth = val;

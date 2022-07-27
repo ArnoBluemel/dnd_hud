@@ -6,7 +6,6 @@ export class DndSession {
   mapSize: [number, number] = [0, 0];
 
   public addCharacterToMap(id: string) {
-    //selectedCharacter.value;
     let character = session.characters.find((v) => v.id == id);
     if (!character) return;
     if (!character.wasOnMapBefore) character.mapPosition = this.getRelativeMapPosition(character.mapPosition[0], character.mapPosition[1]);
@@ -17,6 +16,19 @@ export class DndSession {
     let character = this.characters.find((v) => v.id == id);
     if (!character) return;
     character.isOnMap = false;
+  }
+
+  public addCharacterToCombat(id: string, initiative: number) {
+    let character = session.characters.find((v) => v.id == id);
+    if (!character) return;
+    character.initiative = initiative;
+    character.isInCombat = true;
+  }
+
+  public removeFromCombat(id: string) {
+    let character = this.characters.find((v) => v.id == id);
+    if (!character) return;
+    character.isInCombat = false;
   }
 
   public removeAllCharactersFromMap(reset: boolean) {
@@ -45,6 +57,7 @@ characterA.name = "Hellraiser";
 characterA.isOnMap = false;
 characterA.maxHealth = 666;
 characterA.currentHealth = 255;
+characterA.initiative = 10;
 session.characters.push(characterA);
 
 let characterB = new Character();
@@ -52,6 +65,7 @@ characterB.name = "Deathbringer";
 characterB.isOnMap = false;
 characterB.maxHealth = 69;
 characterB.currentHealth = 69;
+characterB.initiative = 5;
 session.characters.push(characterB);
 
 let characterC = new Character();
@@ -60,6 +74,7 @@ characterC.isOnMap = false;
 characterC.charType = 1;
 characterC.maxHealth = 9001;
 characterC.currentHealth = 42;
+characterC.initiative = 15;
 session.characters.push(characterC);
 
 let characterD = new Character();
@@ -68,4 +83,5 @@ characterD.isOnMap = false;
 characterD.charType = 2;
 characterD.maxHealth = 501;
 characterD.currentHealth = 66;
+characterD.initiative = 20;
 session.characters.push(characterD);
