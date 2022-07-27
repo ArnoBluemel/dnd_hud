@@ -4,6 +4,7 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import Map from "./components/Map.vue";
 import CharacterList from "./components/CharacterList.vue";
+import CombatVue from "./components/Combat.vue";
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import CharacterList from "./components/CharacterList.vue";
       <div class="col-6">
         <Map />
       </div>
-      <div class="col-3">Enemy</div>
+      <div class="col-3"><combat-vue /></div>
     </div>
   </div>
 </template>

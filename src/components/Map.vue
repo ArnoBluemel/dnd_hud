@@ -100,6 +100,7 @@
               </div>
             </template>
           </ol-overlay>
+          <ol-fullscreen-control />
         </ol-map>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-export class Character {
+export class StatBlock {
   constructor() {}
 
   id: string = uuid();
