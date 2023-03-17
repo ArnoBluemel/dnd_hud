@@ -31,12 +31,12 @@
     </div>
   </div>
   <dialog :open="askInitiative">
-    <div class="dialog-background" />
-    <div class="initiative-dialog">
+    <div class="dialog-background"></div>
+    <div class="container-dialog">
       <div class="dialog-controls">
-        <label class="initiative-label">Initiative:</label>
-        <input class="initiative-input" :value="initiative" @input="(ev) => initiative = Number(filterNotNumbers(ev.target as any))" />
-        <b-button class="confirm-initiative" @click="enterCombat()">OK</b-button>
+        <label class="dialog-label">Initiative:</label>
+        <input class="dialog-input" :value="initiative" @input="(ev) => initiative = Number(filterNotNumbers(ev.target as any))" />
+        <b-button class="dialog-confirm" @click="enterCombat()">OK</b-button>
       </div>
     </div>
   </dialog>
@@ -133,54 +133,5 @@ function filterNotNumbers(target: { value: string }): string {
   width: 50%;
   height: 100%;
   margin-left: 5%;
-}
-
-.initiative-dialog {
-  @extend .container;
-  @extend .subcontainer;
-  width: 20%;
-  height: 20%;
-  position: fixed;
-  top: 40%;
-  left: 40%;
-}
-
-.dialog-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.initiative-label {
-  @extend .container-text-alt;
-  width: 30%;
-  margin-left: 5%;
-  height: 75px;
-  line-height: 75px;
-}
-
-.initiative-input {
-  @extend .container-text-input;
-  text-align: center;
-  width: 20%;
-  margin-left: 5%;
-  height: 75px;
-  //margin-top: calc(50% - 37.5px);
-}
-
-.confirm-initiative {
-  @extend .container-button;
-  width: 30%;
-  margin-left: 5%;
-  height: 75px;
-}
-
-.dialog-controls {
-  height: 100%;
-  display: flex;
-  align-items: center;
 }
 </style>

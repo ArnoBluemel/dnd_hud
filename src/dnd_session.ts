@@ -2,8 +2,14 @@ import { reactive } from "vue";
 import { Character } from "./character";
 
 export class DndSession {
-  characters: Character[] = reactive([]);
+  readonly characters: Character[] = reactive([]);
   mapSize: [number, number] = [0, 0];
+
+  removeCharacter(id: string) {
+    let character = session.characters.find((v) => v.id == id);
+    if (!character) return;
+    this.characters.splice(this.characters.indexOf(character), 1);
+  }
 
   public addCharacterToMap(id: string) {
     let character = session.characters.find((v) => v.id == id);

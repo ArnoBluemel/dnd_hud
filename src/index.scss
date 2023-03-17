@@ -93,6 +93,58 @@ body {
   display: none;
 }
 
+dialog {
+  z-index: 100;
+}
+
+.container-dialog {
+  @extend .container;
+  @extend .subcontainer;
+  width: 20%;
+  height: 20%;
+  position: fixed;
+  top: 40%;
+  left: 40%;
+}
+
+.dialog-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-label {
+  @extend .container-text-alt;
+  width: 30%;
+  margin-left: 5%;
+  height: 75px;
+  line-height: 75px;
+}
+
+.dialog-input {
+  @extend .container-text-input;
+  text-align: center;
+  width: 25%;
+  margin-left: 5%;
+  height: 75px;
+}
+
+.dialog-confirm {
+  @extend .container-button;
+  width: 25%;
+  margin-left: 5%;
+  height: 75px;
+}
+
+.dialog-controls {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

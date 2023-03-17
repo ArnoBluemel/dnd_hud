@@ -6,7 +6,6 @@
           <!-- <div class="row"> -->
           <div
             class="col-1 container-text-alt"
-            style="margin-left: 2%"
             :style="!character.isOnMap ? 'opacity: 0.3' : ''"
             @click="
               () => {
@@ -20,7 +19,7 @@
             <a v-else-if="character.charType == 2">🛡️</a>
           </div>
           <div class="col-6 container-text">{{ character.name }}</div>
-          <div class="col-4 container-text-alt" style="font-size: 4mm" @click="editHealth(character, true)">
+          <div class="col-3 container-text-alt" style="font-size: 4mm" @click="editHealth(character, true)">
             <div>♥️:</div>
             <input
               :id="'health' + character.id"
@@ -34,6 +33,16 @@
             <span v-if="!character.editingHealth">{{ character.currentHealth }}</span>
             /
             <span>{{ character.maxHealth }}</span>
+          </div>
+          <div
+            class="col-1 container-text-alt"
+            style="margin-left: 2%"
+            @click="
+              askRemove = true;
+              removeId = character.id;
+            "
+          >
+            ❌
           </div>
           <!-- </div> -->
         </div>
@@ -103,6 +112,17 @@
       </div>
     </div>
   </b-form-group>
+  <dialog :open="askRemove">
+    <div class="dialog-background"></div>
+    <div class="container-dialog">
+      <div class="dialog-controls">
+        <label class="dialog-label">Sure?</label>
+        <br />
+        <b-button class="dialog-confirm" @click="remove(true)">Yes</b-button>
+        <b-button class="dialog-confirm" @click="remove(false)">No</b-button>
+      </div>
+    </div>
+  </dialog>
 </template>
 
 <script lang="ts" setup>
@@ -118,12 +138,20 @@ const newCharacterNameOkay = ref<boolean>(false);
 const newCharacterHP = ref<string>("");
 const newCharacterHPOkay = ref<boolean>(false);
 const newCharacterType = ref<number>(-1);
+const askRemove = ref<Boolean>(false);
+const removeId = ref<string>("");
 
 const characterTypes = [
   { text: "⚔️", value: 0 }, //  Player
   { text: "💀", value: 1 }, //  Monster
   { text: "🛡️", value: 2 }, //  NPC
 ];
+
+function remove(doIt: boolean) {
+  if (doIt) session.removeCharacter(removeId.value);
+  removeId.value = "";
+  askRemove.value = false;
+}
 
 function toggleAddCharacter(val: boolean) {
   addingCharacter.value = val;
