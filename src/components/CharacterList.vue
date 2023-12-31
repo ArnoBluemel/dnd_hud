@@ -14,9 +14,9 @@
               }
             "
           >
-            <a v-if="character.charType == 0">⚔️</a>
-            <a v-else-if="character.charType == 1">💀</a>
-            <a v-else-if="character.charType == 2">🛡️</a>
+            <a v-if="character.charType == 1">⚔️</a>
+            <a v-else-if="character.charType == 2">💀</a>
+            <a v-else-if="character.charType == 3">🛡️</a>
           </div>
           <div class="col-6 container-text">{{ character.name }}</div>
           <div class="col-3 container-text-alt" style="font-size: 4mm" @click="editHealth(character, true)">
@@ -102,7 +102,7 @@
             variant="dark"
             class="character-button"
             @click="saveNewCharacter()"
-            :disabled="!(newCharacterNameOkay && newCharacterHPOkay && [0, 1, 2].includes(newCharacterType))"
+            :disabled="!(newCharacterNameOkay && newCharacterHPOkay && [1, 2, 3].includes(newCharacterType))"
             >Save</b-button
           >
         </div>
@@ -142,9 +142,9 @@ const askRemove = ref<Boolean>(false);
 const removeId = ref<string>("");
 
 const characterTypes = [
-  { text: "⚔️", value: 0 }, //  Player
-  { text: "💀", value: 1 }, //  Monster
-  { text: "🛡️", value: 2 }, //  NPC
+  { text: "⚔️", value: 1 }, //  Player
+  { text: "💀", value: 2 }, //  Monster
+  { text: "🛡️", value: 3 }, //  NPC
 ];
 
 function remove(doIt: boolean) {

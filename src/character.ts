@@ -5,7 +5,7 @@ export class Character {
 
   id: string = uuid().replaceAll("-", "");
   name: string = "";
-  charType: number = 0; // 0: Player, 1: Monster, 2: NPC
+  charType: number = 1; // 1: Player, 2: Monster, 3: NPC
   isOnMap: boolean = false;
   wasOnMapBefore: boolean = false;
   mapPosition: [number, number] = [50, 50];
